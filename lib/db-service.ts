@@ -1,23 +1,7 @@
 import db from './db';
 import { Post, PostWithRelations, Category, Tag, User, CreatePostInput, UpdatePostInput } from './types';
 import { v4 as uuidv4 } from 'uuid';
-
-// Helper function to generate slugs
-export function generateSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim();
-}
-
-// Helper function to calculate reading time
-export function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200;
-  const words = content.trim().split(/\s+/).length;
-  return Math.ceil(words / wordsPerMinute);
-}
+import { generateSlug, calculateReadingTime } from './utils';
 
 // User operations
 export const userService = {

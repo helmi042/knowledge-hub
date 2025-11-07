@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { PostWithRelations, Category, Tag } from '@/lib/types';
-import { generateSlug } from '@/lib/db-service';
+import { generateSlug } from '@/lib/utils';
 import 'easymde/dist/easymde.min.css';
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false });

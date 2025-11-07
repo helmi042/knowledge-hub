@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { postService, generateSlug } from '@/lib/db-service';
+import { postService } from '@/lib/db-service';
+import { generateSlug } from '@/lib/utils';
 
 // GET /api/posts - Get all posts with optional filters
 export async function GET(request: NextRequest) {

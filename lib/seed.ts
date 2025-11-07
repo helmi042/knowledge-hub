@@ -1,5 +1,6 @@
 import db, { initDatabase } from './db';
-import { userService, postService, categoryService, tagService, generateSlug } from './db-service';
+import { userService, postService, categoryService, tagService } from './db-service';
+import { generateSlug } from './utils';
 import bcrypt from 'bcryptjs';
 
 export async function seedDatabase() {

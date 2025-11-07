@@ -7,7 +7,7 @@ import rehypeRaw from 'rehype-raw';
 import 'highlight.js/styles/github-dark.css';
 
 interface PostPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 async function getPost(slug: string) {
@@ -23,7 +23,8 @@ async function getPost(slug: string) {
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   if (!post) {
     return {
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   if (!post) {
     return (
