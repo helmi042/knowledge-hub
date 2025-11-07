@@ -1,4 +1,4 @@
-import { initDatabase } from './db';
+import db, { initDatabase } from './db';
 import { userService, postService, categoryService, tagService, generateSlug } from './db-service';
 import bcrypt from 'bcryptjs';
 
@@ -7,6 +7,16 @@ export async function seedDatabase() {
   initDatabase();
 
   console.log('Seeding database...');
+
+  // Check if data already exists
+  const existingUser = userService.findByEmail('admin@knowledgehub.com');
+  if (existingUser) {
+    console.log('Database already seeded. Skipping...');
+    console.log('\nLogin credentials:');
+    console.log('Email: admin@knowledgehub.com');
+    console.log('Password: admin123');
+    return;
+  }
 
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 10);
