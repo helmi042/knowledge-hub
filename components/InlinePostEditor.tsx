@@ -33,25 +33,24 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
 
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Memoize extensions to prevent recreation
+  const extensions = useMemo(() => [
+    StarterKit,
+    Link.configure({
+      openOnClick: false,
+      HTMLAttributes: {
+        class: 'text-blue-600 dark:text-blue-400 hover:underline',
+      },
+    }),
+    TiptapImage,
+    Placeholder.configure({
+      placeholder: 'Start writing your content...',
+    }),
+  ], []);
+
   // TipTap editor for content
   const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3],
-        },
-      }),
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: 'text-blue-600 dark:text-blue-400 hover:underline',
-        },
-      }),
-      TiptapImage,
-      Placeholder.configure({
-        placeholder: 'Start writing your content...',
-      }),
-    ],
+    extensions,
     content: post.content,
     editable: isEditMode,
     immediatelyRender: false,
@@ -62,7 +61,7 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
         debouncedSave();
       }
     },
-  }, []);
+  }, [extensions]);
 
   // Update editor editable state when edit mode changes
   useEffect(() => {
