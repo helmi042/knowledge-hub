@@ -43,6 +43,9 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
       }),
       Link.configure({
         openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-blue-600 dark:text-blue-400 hover:underline',
+        },
       }),
       TiptapImage,
       Placeholder.configure({
@@ -52,13 +55,14 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
     content: post.content,
     editable: isEditMode,
     immediatelyRender: false,
+    shouldRerenderOnTransaction: false,
     onUpdate: ({ editor }) => {
       if (isEditMode) {
         setHasUnsavedChanges(true);
         debouncedSave();
       }
     },
-  });
+  }, []);
 
   // Update editor editable state when edit mode changes
   useEffect(() => {
