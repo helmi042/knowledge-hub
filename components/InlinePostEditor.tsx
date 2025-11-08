@@ -65,11 +65,9 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
     editable: isEditMode,
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
-    onUpdate: ({ editor }) => {
-      if (isEditMode) {
-        setHasUnsavedChanges(true);
-        debouncedSave();
-      }
+    onUpdate: () => {
+      // Just mark as unsaved, don't trigger auto-save on every keystroke
+      setHasUnsavedChanges(true);
     },
   }, [extensions]);
 
@@ -80,19 +78,8 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
     }
   }, [isEditMode, editor]);
 
-  // Auto-save with debounce
-  const debouncedSave = useCallback(() => {
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
-
-    saveTimeoutRef.current = setTimeout(() => {
-      handleAutoSave();
-    }, 2000); // 2 second debounce
-  }, []);
-
-  const handleAutoSave = async () => {
-    if (!hasUnsavedChanges || !isEditMode) return;
+  const handleSave = async () => {
+    if (!hasUnsavedChanges) return;
 
     setIsSaving(true);
     try {
@@ -124,16 +111,19 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
         setLastSaved(new Date());
       }
     } catch (error) {
-      console.error('Auto-save failed:', error);
+      console.error('Save failed:', error);
+      alert('Failed to save changes');
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleManualSave = async () => {
-    await handleAutoSave();
-    setIsEditMode(false);
-    router.refresh();
+  const handleSaveAndExit = async () => {
+    await handleSave();
+    if (!isSaving) {
+      setIsEditMode(false);
+      router.refresh();
+    }
   };
 
   const handleCancel = () => {
@@ -150,19 +140,16 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
   const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value);
     setHasUnsavedChanges(true);
-    debouncedSave();
   };
 
   const handleExcerptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setExcerpt(e.target.value);
     setHasUnsavedChanges(true);
-    debouncedSave();
   };
 
   const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCoverImage(e.target.value);
     setHasUnsavedChanges(true);
-    debouncedSave();
   };
 
   const formattedDate = new Date(post.created_at).toLocaleDateString('en-US', {
@@ -206,11 +193,11 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
                   Cancel
                 </button>
                 <button
-                  onClick={handleManualSave}
+                  onClick={handleSaveAndExit}
                   disabled={isSaving}
                   className="px-4 py-2 bg-blue-600 text-white text-sm rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50"
                 >
-                  Save & Exit
+                  {isSaving ? 'Saving...' : 'Save & Exit'}
                 </button>
               </div>
             </>
