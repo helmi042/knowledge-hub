@@ -36,7 +36,11 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
   // TipTap editor for content
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3],
+        },
+      }),
       Link.configure({
         openOnClick: false,
       }),
