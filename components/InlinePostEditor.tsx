@@ -549,203 +549,56 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
                 </button>
               </div>
             )}
-            <style jsx global>{`
-              .tiptap-editor-container .ProseMirror {
-                outline: none;
-                min-height: 400px;
-                padding: 1.5rem;
-                border: 2px dashed #d1d5db;
-                border-radius: 0.5rem;
-                transition: border-color 0.2s;
-              }
+            <div className="prose prose-lg dark:prose-invert max-w-none
+              prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
+              prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-12
+              prose-h2:text-3xl prose-h2:mb-4 prose-h2:mt-10
+              prose-h3:text-2xl prose-h3:mb-3 prose-h3:mt-8
+              prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
+              prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+              prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300
+              prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:before:content-[''] prose-code:after:content-['']
+              prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950 prose-pre:text-gray-100 prose-pre:p-6 prose-pre:rounded-xl prose-pre:overflow-x-auto
+              prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6
+              prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6
+              prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:mb-2
+              prose-img:rounded-xl prose-img:shadow-lg
+              prose-hr:border-gray-300 dark:prose-hr:border-gray-700 prose-hr:my-12
+              prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-bold
+              prose-em:text-gray-700 dark:prose-em:text-gray-300
+            ">
+              <style jsx global>{`
+                .ProseMirror {
+                  outline: none;
+                  min-height: 400px;
+                  padding: 1.5rem;
+                  border: 2px dashed #d1d5db;
+                  border-radius: 0.5rem;
+                  transition: border-color 0.2s;
+                }
 
-              .tiptap-editor-container .ProseMirror:focus {
-                border-color: #3b82f6;
-              }
+                .ProseMirror:focus {
+                  border-color: #3b82f6;
+                }
 
-              .dark .tiptap-editor-container .ProseMirror {
-                border-color: #4b5563;
-              }
+                .dark .ProseMirror {
+                  border-color: #4b5563;
+                }
 
-              .dark .tiptap-editor-container .ProseMirror:focus {
-                border-color: #3b82f6;
-              }
+                .dark .ProseMirror:focus {
+                  border-color: #3b82f6;
+                }
 
-              .tiptap-editor-container .ProseMirror p.is-editor-empty:first-child::before {
-                color: #9ca3af;
-                content: attr(data-placeholder);
-                float: left;
-                height: 0;
-                pointer-events: none;
-              }
-
-              /* Style the editor content like the prose class */
-              .tiptap-editor-container .ProseMirror {
-                font-size: 1.125rem;
-                line-height: 1.75rem;
-              }
-
-              .tiptap-editor-container .ProseMirror h1 {
-                font-size: 2.25rem;
-                font-weight: bold;
-                margin-top: 3rem;
-                margin-bottom: 1.5rem;
-                color: #111827;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror h1 {
-                color: #ffffff;
-              }
-
-              .tiptap-editor-container .ProseMirror h2 {
-                font-size: 1.875rem;
-                font-weight: bold;
-                margin-top: 2.5rem;
-                margin-bottom: 1rem;
-                color: #111827;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror h2 {
-                color: #ffffff;
-              }
-
-              .tiptap-editor-container .ProseMirror h3 {
-                font-size: 1.5rem;
-                font-weight: bold;
-                margin-top: 2rem;
-                margin-bottom: 0.75rem;
-                color: #111827;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror h3 {
-                color: #ffffff;
-              }
-
-              .tiptap-editor-container .ProseMirror p {
-                margin-bottom: 1.5rem;
-                color: #374151;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror p {
-                color: #d1d5db;
-              }
-
-              .tiptap-editor-container .ProseMirror a {
-                color: #2563eb;
-                text-decoration: none;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror a {
-                color: #60a5fa;
-              }
-
-              .tiptap-editor-container .ProseMirror a:hover {
-                text-decoration: underline;
-              }
-
-              .tiptap-editor-container .ProseMirror code {
-                background-color: #f3f4f6;
-                color: #2563eb;
-                padding: 0.125rem 0.5rem;
-                border-radius: 0.25rem;
-                font-size: 0.875em;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror code {
-                background-color: #1f2937;
-                color: #60a5fa;
-              }
-
-              .tiptap-editor-container .ProseMirror pre {
-                background-color: #111827;
-                color: #f3f4f6;
-                padding: 1.5rem;
-                border-radius: 0.75rem;
-                overflow-x: auto;
-                margin-bottom: 1.5rem;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror pre {
-                background-color: #030712;
-              }
-
-              .tiptap-editor-container .ProseMirror pre code {
-                background-color: transparent;
-                color: inherit;
-                padding: 0;
-              }
-
-              .tiptap-editor-container .ProseMirror blockquote {
-                border-left: 4px solid #2563eb;
-                padding-left: 1.5rem;
-                font-style: italic;
-                color: #374151;
-                margin-bottom: 1.5rem;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror blockquote {
-                color: #d1d5db;
-              }
-
-              .tiptap-editor-container .ProseMirror ul,
-              .tiptap-editor-container .ProseMirror ol {
-                padding-left: 1.5rem;
-                margin-bottom: 1.5rem;
-              }
-
-              .tiptap-editor-container .ProseMirror ul {
-                list-style-type: disc;
-              }
-
-              .tiptap-editor-container .ProseMirror ol {
-                list-style-type: decimal;
-              }
-
-              .tiptap-editor-container .ProseMirror li {
-                margin-bottom: 0.5rem;
-                color: #374151;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror li {
-                color: #d1d5db;
-              }
-
-              .tiptap-editor-container .ProseMirror img {
-                border-radius: 0.75rem;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-                max-width: 100%;
-                height: auto;
-              }
-
-              .tiptap-editor-container .ProseMirror hr {
-                border: none;
-                border-top: 1px solid #d1d5db;
-                margin: 3rem 0;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror hr {
-                border-top-color: #374151;
-              }
-
-              .tiptap-editor-container .ProseMirror strong {
-                font-weight: bold;
-                color: #111827;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror strong {
-                color: #ffffff;
-              }
-
-              .tiptap-editor-container .ProseMirror em {
-                font-style: italic;
-                color: #374151;
-              }
-
-              .dark .tiptap-editor-container .ProseMirror em {
-                color: #d1d5db;
-              }
-            `}</style>
-            <EditorContent editor={editor} />
+                .ProseMirror p.is-editor-empty:first-child::before {
+                  color: #9ca3af;
+                  content: attr(data-placeholder);
+                  float: left;
+                  height: 0;
+                  pointer-events: none;
+                }
+              `}</style>
+              <EditorContent editor={editor} />
+            </div>
           </div>
         ) : (
           <div className="prose prose-lg dark:prose-invert max-w-none
