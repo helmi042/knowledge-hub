@@ -9,16 +9,12 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import TiptapImage from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import { common, createLowlight } from 'lowlight';
 import { PostWithRelations, Category, Tag } from '@/lib/types';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
 import 'highlight.js/styles/github-dark.css';
-
-const lowlight = createLowlight(common);
 
 interface InlinePostEditorProps {
   initialPost: PostWithRelations;
@@ -51,9 +47,6 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
       TiptapImage,
       Placeholder.configure({
         placeholder: 'Start writing your content...',
-      }),
-      CodeBlockLowlight.configure({
-        lowlight,
       }),
     ],
     content: post.content,
