@@ -10,6 +10,10 @@ import Link from '@tiptap/extension-link';
 import TiptapImage from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import { PostWithRelations, Category, Tag } from '@/lib/types';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
+import rehypeRaw from 'rehype-raw';
 import 'highlight.js/styles/github-dark.css';
 
 interface InlinePostEditorProps {
@@ -32,6 +36,12 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
   const [showCoverInput, setShowCoverInput] = useState(false);
 
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Detect if content is HTML (from TipTap) or Markdown
+  const isHtmlContent = (content: string) => {
+    // Check for common HTML tags that TipTap generates
+    return /<(p|h[1-6]|ul|ol|li|blockquote|strong|em|code|pre)>/i.test(content);
+  };
 
   // Memoize extensions to prevent recreation
   const extensions = useMemo(() => [
@@ -737,27 +747,35 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
             <EditorContent editor={editor} />
           </div>
         ) : (
-          <div
-            className="prose prose-lg dark:prose-invert max-w-none
-              prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
-              prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-12
-              prose-h2:text-3xl prose-h2:mb-4 prose-h2:mt-10
-              prose-h3:text-2xl prose-h3:mb-3 prose-h3:mt-8
-              prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
-              prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
-              prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300
-              prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:before:content-[''] prose-code:after:content-['']
-              prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950 prose-pre:text-gray-100 prose-pre:p-6 prose-pre:rounded-xl prose-pre:overflow-x-auto
-              prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6
-              prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6
-              prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:mb-2
-              prose-img:rounded-xl prose-img:shadow-lg
-              prose-hr:border-gray-300 dark:prose-hr:border-gray-700 prose-hr:my-12
-              prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-bold
-              prose-em:text-gray-700 dark:prose-em:text-gray-300
-            "
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <div className="prose prose-lg dark:prose-invert max-w-none
+            prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
+            prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-12
+            prose-h2:text-3xl prose-h2:mb-4 prose-h2:mt-10
+            prose-h3:text-2xl prose-h3:mb-3 prose-h3:mt-8
+            prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
+            prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+            prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300
+            prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:before:content-[''] prose-code:after:content-['']
+            prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950 prose-pre:text-gray-100 prose-pre:p-6 prose-pre:rounded-xl prose-pre:overflow-x-auto
+            prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6
+            prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6
+            prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:mb-2
+            prose-img:rounded-xl prose-img:shadow-lg
+            prose-hr:border-gray-300 dark:prose-hr:border-gray-700 prose-hr:my-12
+            prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-bold
+            prose-em:text-gray-700 dark:prose-em:text-gray-300
+          ">
+            {isHtmlContent(post.content) ? (
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            ) : (
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeHighlight, rehypeRaw]}
+              >
+                {post.content}
+              </ReactMarkdown>
+            )}
+          </div>
         )}
 
         {/* Tags */}
