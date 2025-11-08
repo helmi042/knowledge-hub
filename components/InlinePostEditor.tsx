@@ -51,6 +51,7 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
     ],
     content: post.content,
     editable: isEditMode,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
       if (isEditMode) {
         setHasUnsavedChanges(true);
