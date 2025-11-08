@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import EditablePostView from '@/components/EditablePostView';
+import InlinePostEditor from '@/components/InlinePostEditor';
 
 interface PostPageProps {
   params: Promise<{ slug: string }>;
@@ -56,5 +56,5 @@ export default async function PostPage({ params }: PostPageProps) {
     );
   }
 
-  return <EditablePostView initialPost={post} />;
+  return <InlinePostEditor initialPost={post} />;
 }
