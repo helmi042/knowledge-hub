@@ -120,7 +120,7 @@ export default function PostEditor({ post, isEdit = false }: PostEditorProps) {
     return {
       spellChecker: false,
       placeholder: 'Write your post content in Markdown...',
-      status: ['lines', 'words'],
+      status: ['lines', 'words'] as const,
       autofocus: false,
       toolbar: [
         'bold',
@@ -140,7 +140,7 @@ export default function PostEditor({ post, isEdit = false }: PostEditorProps) {
         'fullscreen',
         '|',
         'guide',
-      ],
+      ] as const,
     };
   }, []);
 
