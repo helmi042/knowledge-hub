@@ -12,6 +12,11 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
+    "@tiptap/extension-image": "^3.10.3",
+    "@tiptap/extension-link": "^3.10.3",
+    "@tiptap/extension-placeholder": "^3.10.3",
+    "@tiptap/react": "^3.10.3",
+    "@tiptap/starter-kit": "^3.10.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/better-sqlite3": "^7.6.13",
     "@types/uuid": "^10.0.0",
