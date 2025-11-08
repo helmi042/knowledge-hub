@@ -533,6 +533,20 @@ export default function InlinePostEditor({ initialPost }: InlinePostEditorProps)
                 >
                   ↷ Redo
                 </button>
+                <div className="w-px bg-gray-300 dark:bg-gray-600 mx-1"></div>
+                <button
+                  onClick={() => {
+                    const html = window.prompt('Paste your HTML content:');
+                    if (html) {
+                      editor.commands.setContent(html);
+                      setHasUnsavedChanges(true);
+                    }
+                  }}
+                  className="px-3 py-1.5 rounded text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"
+                  title="Paste HTML"
+                >
+                  📋 Paste HTML
+                </button>
               </div>
             )}
             <style jsx global>{`
